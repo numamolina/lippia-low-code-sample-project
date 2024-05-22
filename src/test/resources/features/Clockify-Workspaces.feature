@@ -9,12 +9,13 @@ Feature: clockify low code - Trabajando con Workspaces
   @ObtenerWorkspaces
   Scenario: Obtener Workspaces
     When execute method GET
+    * define workSpaceID = response[6].id
     Then the status code should be 200
 
   @CrearWorkspace
   Scenario Outline: Agregar workspace
     And header Content-Type = application/json
-    And set value <nameWorkspace> of key name in body jsons/bodies/CreateWorkspace.json
+    And set value <nameWorkspace> of key name in body jsons/bodies/TP8_CreateWorkspace.json
     When execute method POST
     Then the status code should be 201
 
@@ -28,5 +29,5 @@ Feature: clockify low code - Trabajando con Workspaces
     When execute method GET
     And response should be [6].id = 664c36dc7d59624baae8dd8e
     And response should be [6].name = Workspace TP8 Lippia Api LowCode
-    * define espacioDeTrabajo = response[6].id
+    * define workSpaceID = response[6].id
     Then the status code should be 200
