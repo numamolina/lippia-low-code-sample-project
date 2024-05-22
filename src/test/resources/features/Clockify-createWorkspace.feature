@@ -19,10 +19,9 @@ Feature: clockify low code - Trabajando con Workspaces
     Then the status code should be 201
 
     Examples:
-      | nameWorkspace                        |
-      | "z6basic automation academy"         |
-      | "z6Workspace TP8 Lippia Api LowCode" |
-
+      | nameWorkspace                      |
+      | "basic automation academy"         |
+      | "Workspace TP8 Lippia Api LowCode" |
 
   @ObtenerTP8Workspace
   Scenario: Obtener Workspace especifico para el TP8
