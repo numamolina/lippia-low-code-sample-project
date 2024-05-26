@@ -14,9 +14,9 @@ Feature: Trabajar con proyectos dentro de Workspaces
     Then the status code should be 201
 
     Examples:
-      | nameProject   |
-      | "Proyecto-01" |
-      | "Proyecto-02" |
+      | nameProject    |
+      | "Proyecto-01b" |
+      | "Proyecto-02b" |
 
   @GetAllProjects
   Scenario: Consultar todos los proyectos de un workspace
@@ -28,27 +28,29 @@ Feature: Trabajar con proyectos dentro de Workspaces
 
 
   @ConsultarProyectoID
-  Scenario: Consultar Proyecto por ID
-    And endpoint v1/workspaces/$(env.workSpaceID)/projects/664e488cca96041c2c4e4aa7
+  Scenario Outline: Consultar Proyecto por ID
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method GET
     Then the status code should be 200
 
+    Examples:
+      | IdProyecto               |
+      | 664e488cca96041c2c4e4aa7 |
+
+
   @updateProjectUserCost
     #Ejercicio de eleccion libre de campo a editar
+    #Update project user cost rate
+#NO SE PUDO POR SER UNA CARACTERISTICA PREMIUM
   Scenario Outline: Editar el monto de algun proyecto existente
-    #  664e488cca96041c2c4e4aa7
-    And endpoint v1/workspaces/$(env.workSpaceID)/projects/664e488cca96041c2c4e4aa7/users/662696c75d9896471187566c/cost-rate
-#    And endpoint v1/workspaces/{workspaceId}/projects/664e488cca96041c2c4e4aa7/users/{userId}/cost-rate
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<projectId>/users/<userId>/cost-rate
     And set value <amountUser> of key amount in body jsons/bodies/TP8_UpdateAmountProject.json
     And set value <sinceUser> of key since in body jsons/bodies/TP8_UpdateAmountProject.json
     When execute method PUT
     Then the status code should be 200
 
-    Examples
-      | amountUser | sinceUser            |
-      | 900        | 2024-05-23T00:00:00Z |
-
-
-
-
+    Examples:
+      | amountUser | sinceUser            | projectId                | userId                   |
+      | 901        | 2024-05-25T14:30:45Z | 664e488cca96041c2c4e4aa7 | 662696c75d9896471187566c |
+      |            |                      |                          |                          |
 

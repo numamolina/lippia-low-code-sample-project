@@ -10,5 +10,5 @@ Feature: Obtener datos del usuario logueado en Clockify via API
   @getUserID
   Scenario: Obtener el ID del usuario logueado
     When execute method GET
-#    * define usuarioID = response.id
+    * define usuarioID = response.id
     Then the status code should be 200
