@@ -7,18 +7,18 @@ Feature: Trabajar con proyectos dentro de Workspaces
     And header x-api-key = $(env.x_api_key)
 
 
-  @CrearProyecto @punto1 @punto4
+  @CrearProyecto @Punto1 @Punto4
     #Punto 1 y punto 4
   Scenario Outline: Crear un proyecto dentro de un workspace exitosamente
     And endpoint v1/workspaces/$(env.workSpaceID)/projects
-    And set value <nameProject> of key name in body jsons/bodies/TP8_AddProject.json
+    And set value <nameProject> of key name in body jsons/bodies/TP8_Projects.json
     When execute method POST
     Then the status code should be 201
 
     Examples:
       | nameProject    |
-      | "Proyecto-01c" |
-      | "Proyecto-02c" |
+      | "Proyecto-01d" |
+      | "Proyecto-02d" |
 
   @GetAllProjects
   Scenario: Consultar todos los proyectos de un workspace
@@ -29,7 +29,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     Then the status code should be 200
 
 
-  @ConsultarProyectoID @punto2 @punto4
+  @ConsultarProyectoID @Punto2 @Punto4
         #Punto 2 y punto 4
   Scenario Outline: Consultar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
@@ -39,6 +39,18 @@ Feature: Trabajar con proyectos dentro de Workspaces
     Examples:
       | IdProyecto               |
       | 664e488cca96041c2c4e4aa7 |
+
+
+  @updateProject @Punto4
+  Scenario Outline: Modificar Proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
+    And set value <color> of key color in body jsons/bodies/TP8_UpdateProject.json
+    When execute method PUT
+    Then the status code should be 200
+
+    Examples:
+      | IdProyecto               | color   |
+      | 664e488cca96041c2c4e4aa7 | #010101 |
 
 
   @updateProjectUserCost
@@ -62,7 +74,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
 #  Punto 4 consigna: Endpoint /projects, camino feliz. Analizar si tiene parámetros obligatorios y no obligatorios, y definir pruebas para todos los casos.
 
 
-  @archivarProyectoID @punto4
+  @archivarProyectoID @Punto4
     #metodo PUT (update project)
   Scenario Outline: Archivar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
@@ -77,8 +89,9 @@ Feature: Trabajar con proyectos dentro de Workspaces
       | 664e47abdc66f75ba3ca4212 | true    |
 
 
-  @borrarProyectoID @punto4
-        #Punto 4
+  @borrarProyectoID @Punto4
+#Punto 4
+    #Metodo DEL
   Scenario Outline: Borrar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method DELETE
@@ -93,24 +106,21 @@ Feature: Trabajar con proyectos dentro de Workspaces
 #664c3e823b9ad93ad35feb51
 
 
-
-
-
-  @updateProjectEstimate @punto4
-        #Punto 4 - metodo PATCH
+  @updateProjectEstimate @Punto4
+#Punto 4 - metodo PATCH
   Scenario Outline: Modificar presupuesto (budget) de proyecto
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/estimate
-    And set value <resetOp> of key active in body jsons/bodies/TP8_UpdateProjectEstimated.json
+    And set value <activo> of key active in body jsons/bodies/TP8_UpdateProjectEstimated.json
     When execute method PATCH
     Then the status code should be 200
 
     Examples:
-      | IdProyecto               | resetOp |
-      | 664eb549ca96041c2c5044c2 | true    |
-      | 664eb5d0dc66f75ba3cc3ad3 | true    |
+      | IdProyecto               | activo |
+      | 664eb549ca96041c2c5044c2 | false  |
+      | 664eb5d0dc66f75ba3cc3ad3 | false  |
 
 
-  @updateProjectMemberships @punto4
+  @updateProjectMemberships @Punto4
 #Punto 4 - metodo PATCH
   Scenario Outline: Modificar membresia de proyecto
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
@@ -122,3 +132,46 @@ Feature: Trabajar con proyectos dentro de Workspaces
     Examples:
       | IdProyecto               | idUsuario                | monto |
       | 6652622d21704c74384a40b5 | 662696c75d9896471187566c | 100   |
+
+
+  @assignUserToProject @Punto4
+#Punto 4 - metodo POST
+  Scenario Outline: Asignar/remover usuario al proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
+    And set value <idUsuario> of key userIds[0] in body jsons/bodies/TP8_UpdateUserProject.json
+    And set value <remove> of key remove in body jsons/bodies/TP8_UpdateUserProject.json
+    When execute method POST
+    Then the status code should be 200
+# para asignar => remove false
+# para remover => remove true
+    Examples:
+      | IdProyecto               | idUsuario                | remove |
+      | 664e488cca96041c2c4e4aa7 | 662696c75d9896471187566c | false  |
+
+
+  @updateProjectTemplate @Punto4
+#Punto 4 - metodo PATCH
+  Scenario Outline: Modificar template de proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/template
+    And set value <isTemplate> of key isTemplate in body jsons/bodies/TP8_UpdateTemplate.json
+    And set value <template> of key template in body jsons/bodies/TP8_UpdateTemplate.json
+    When execute method PATCH
+    Then the status code should be 200
+
+    Examples:
+      | IdProyecto               | isTemplate | template |
+      | 664eb85390dd872da4c5b805 | false      | false    |
+#NO SE PUDO POR SER UNA CARACTERISTICA PREMIUM
+
+
+  @updateBillableRate @Punto4
+  Scenario Outline: Actualizar la tarifa facturable del usuario del proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<projectId>/users/<userId>/hourly-rate
+    And set value <amountUser> of key amount in body jsons/bodies/TP8_BillableRate.json
+    And set value <sinceUser> of key since in body jsons/bodies/TP8_BillableRate.json
+    When execute method PUT
+    Then the status code should be 200
+
+    Examples:
+      | projectId                | userId                   | amountUser | sinceUser            |
+      | 664e48b0c785857280bff63a | 662696c75d9896471187566c | 9801       | 2022-05-25T14:30:45Z |
