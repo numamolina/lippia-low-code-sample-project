@@ -6,7 +6,9 @@ Feature: Trabajar con proyectos dentro de Workspaces
     And header Content-Type = application/json
     And header x-api-key = $(env.x_api_key)
 
+
   @CrearProyecto
+    #Punto 1 y punto 4
   Scenario Outline: Crear un proyecto dentro de un workspace exitosamente
     And endpoint v1/workspaces/$(env.workSpaceID)/projects
     And set value <nameProject> of key name in body jsons/bodies/TP8_AddProject.json
@@ -28,6 +30,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
 
 
   @ConsultarProyectoID
+        #Punto 2 y punto 4
   Scenario Outline: Consultar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method GET
@@ -53,4 +56,29 @@ Feature: Trabajar con proyectos dentro de Workspaces
       | amountUser | sinceUser            | projectId                | userId                   |
       | 901        | 2024-05-25T14:30:45Z | 664e488cca96041c2c4e4aa7 | 662696c75d9896471187566c |
       |            |                      |                          |                          |
+
+
+
+#  Punto 4 consigna: Endpoint /projects, camino feliz. Analizar si tiene parámetros obligatorios y no obligatorios, y definir pruebas para todos los casos.
+
+
+
+
+  @borrarProyectoID
+        #Punto 4
+  Scenario Outline: Borrar Proyecto por ID
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
+    And set value <boolean> of key archived in body jsons/bodies/TP8_ArchivarProjects.json
+    And execute method PUT
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
+    When execute method DELETE
+    Then the status code should be 200
+
+    Examples:
+      | IdProyecto               | boolean |
+      | 664c3f2d6a8fa06c7846f687 | true    |
+    #Se pueden borrar para probar
+#  IdProyecto:
+#  664c3f2d6a8fa06c7846f687
+#  664e44e5ca96041c2c4e3b13
 

@@ -20,9 +20,9 @@ Feature: clockify low code - Trabajando con Workspaces
     Then the status code should be 201
 
     Examples:
-      | nameWorkspace                        |
-      | "basic automation academy__"         |
-      | "Workspace TP8 Lippia Api LowCode__" |
+      | nameWorkspace                         |
+      | "basic automation academy_a_"         |
+      | "Workspace TP8 Lippia Api LowCode_a_" |
 
   @ObtenerTP8Workspace
   Scenario: Obtener Workspace especifico para el TP8
@@ -35,8 +35,8 @@ Feature: clockify low code - Trabajando con Workspaces
   @Hardcoded
   Scenario: Obtener Workspaces hardcodeados
     Given base url https://api.clockify.me/api/
+    And endpoint v1/workspaces
     And header Content-Type = application/json
     And header x-api-key = NDA3MTFkYzAtYzNjYy00NzExLTlkZmEtZjllZjIyYjMwZWEz
-    And endpoint v1/workspaces
     When execute method GET
     Then the status code should be 200

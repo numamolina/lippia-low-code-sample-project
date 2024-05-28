@@ -27,7 +27,7 @@ Feature: Trabajar con Clientes dentro de un Workspace
 
   @updateClient
   Scenario Outline: Modificar cliente existente
-    #punto3 Ejercicio libre
+    #Punto 3 Ejercicio libre
     And endpoint v1/workspaces/$(env.workSpaceID)/clients/<clienteID>
     And set value <nombreCliente> of key name in body jsons/bodies/TP8_UpdateClient.json
     When execute method PUT
