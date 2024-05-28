@@ -38,7 +38,7 @@ Feature: Trabajar con Clientes dentro de un Workspace
       | 66528f38c0eac57d45f9c6fe | Senior X      |
 
 
-    @readClient
+    @readClient @punto3
     Scenario Outline: Consultar cliente por nombre
     #punto3 (validacion del ejercicio 3)
       And endpoint v1/workspaces/$(env.workSpaceID)/clients/<clienteID>

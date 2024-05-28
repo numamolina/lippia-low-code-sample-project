@@ -7,7 +7,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     And header x-api-key = $(env.x_api_key)
 
 
-  @CrearProyecto
+  @CrearProyecto @punto1 @punto4
     #Punto 1 y punto 4
   Scenario Outline: Crear un proyecto dentro de un workspace exitosamente
     And endpoint v1/workspaces/$(env.workSpaceID)/projects
@@ -17,8 +17,8 @@ Feature: Trabajar con proyectos dentro de Workspaces
 
     Examples:
       | nameProject    |
-      | "Proyecto-01b" |
-      | "Proyecto-02b" |
+      | "Proyecto-01c" |
+      | "Proyecto-02c" |
 
   @GetAllProjects
   Scenario: Consultar todos los proyectos de un workspace
@@ -29,7 +29,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     Then the status code should be 200
 
 
-  @ConsultarProyectoID
+  @ConsultarProyectoID @punto2 @punto4
         #Punto 2 y punto 4
   Scenario Outline: Consultar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
@@ -62,23 +62,63 @@ Feature: Trabajar con proyectos dentro de Workspaces
 #  Punto 4 consigna: Endpoint /projects, camino feliz. Analizar si tiene parámetros obligatorios y no obligatorios, y definir pruebas para todos los casos.
 
 
-
-
-  @borrarProyectoID
-        #Punto 4
-  Scenario Outline: Borrar Proyecto por ID
+  @archivarProyectoID @punto4
+    #metodo PUT (update project)
+  Scenario Outline: Archivar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     And set value <boolean> of key archived in body jsons/bodies/TP8_ArchivarProjects.json
-    And execute method PUT
-    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
-    When execute method DELETE
+    When execute method PUT
     Then the status code should be 200
 
     Examples:
       | IdProyecto               | boolean |
-      | 664c3f2d6a8fa06c7846f687 | true    |
+      | 664e4723ca96041c2c4e45e0 | true    |
+      | 664e47aa90dd872da4c3a7f7 | true    |
+      | 664e47abdc66f75ba3ca4212 | true    |
+
+
+  @borrarProyectoID @punto4
+        #Punto 4
+  Scenario Outline: Borrar Proyecto por ID
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
+    When execute method DELETE
+    Then the status code should be 200
+#El borrado de un proyecto exige que el proyecto antes sea archivado
+    Examples:
+      | IdProyecto               |  |
+      | 664e44e5c785857280bfe5b5 |  |
     #Se pueden borrar para probar
 #  IdProyecto:
-#  664c3f2d6a8fa06c7846f687
-#  664e44e5ca96041c2c4e3b13
+#664e44e5ca96041c2c4e3b13
+#664c3e823b9ad93ad35feb51
 
+
+
+
+
+  @updateProjectEstimate @punto4
+        #Punto 4 - metodo PATCH
+  Scenario Outline: Modificar presupuesto (budget) de proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/estimate
+    And set value <resetOp> of key active in body jsons/bodies/TP8_UpdateProjectEstimated.json
+    When execute method PATCH
+    Then the status code should be 200
+
+    Examples:
+      | IdProyecto               | resetOp |
+      | 664eb549ca96041c2c5044c2 | true    |
+      | 664eb5d0dc66f75ba3cc3ad3 | true    |
+
+
+  @updateProjectMemberships @punto4
+#Punto 4 - metodo PATCH
+  Scenario Outline: Modificar membresia de proyecto
+    And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
+    And set value <idUsuario> of key memberships[0].userId in body jsons/bodies/TP8_UpdateProjectMembership.json
+    And set value <monto> of key memberships[0].hourlyRate.amount in body jsons/bodies/TP8_UpdateProjectMembership.json
+    When execute method PATCH
+    Then the status code should be 200
+
+    Examples:
+      | IdProyecto               | idUsuario                | monto |
+      | 6652622d21704c74384a40b5 | 662696c75d9896471187566c | 100   |
