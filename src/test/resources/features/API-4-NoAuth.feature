@@ -20,7 +20,7 @@ Then the status code should be 200
 
 
 
-  @Auth-UpdateProjectMemberships @Punto6
+  @Auth-UpdateProjectMemberships @Punto6 @400BadRequest
   Scenario Outline: Modificar membresia de proyecto
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
     And set value <idUsuario> of key memberships[0].userId in body jsons/bodies/TP8_UpdateProjectMembership.json
@@ -35,7 +35,7 @@ Then the status code should be 200
 
 
 
-  @Auth-AssignUserToProject @Punto6
+  @Auth-AssignUserToProject @Punto6 @400BadRequest
   Scenario Outline: Asignar/remover usuario al proyecto
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
     And set value <idUsuario> of key userIds[0] in body jsons/bodies/TP8_UpdateUserProject.json

@@ -6,7 +6,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     And header Content-Type = application/json
     And header x-api-key = $(env.x_api_key)
 
-  @ErrorAlCrearProyecto @Punto5
+  @ErrorAlCrearProyecto @Punto5 @400BadRequest
   Scenario Outline: Crear un proyecto dentro de un workspace -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects
     And set value <nameProject> of key name in body jsons/bodies/TP8_Projects.json
@@ -20,7 +20,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     #400 Bad Request: "{"message":"Project name has to be between 2 and 250 characters long","code":501}"
 
 
-  @ErrorborrarProyectoID @Punto5
+  @ErrorborrarProyectoID @Punto5 @400BadRequest
   Scenario Outline: Borrar Proyecto por ID -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method DELETE
@@ -33,7 +33,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
   #400 Bad Request: "{"message":"Cannot delete an active project","code":501}"
 
 
-  @ErrorConsultarProyectoID @Punto5
+  @ErrorConsultarProyectoID @Punto5 @400BadRequest
   Scenario Outline: Consultar Proyecto por ID -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method GET
@@ -45,7 +45,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
   # 400 Bad Request: "{"message":"Project doesn't belong to Workspace","code":501}"
 
 
-  @ErrorUpdateProject @Punto5
+  @ErrorUpdateProject @Punto5 @400BadRequest
   Scenario Outline: Modificar Proyecto -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     And set value <color> of key color in body jsons/bodies/TP8_UpdateProject.json
@@ -58,7 +58,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
       | 664e488cca96041c2c4e4aa7 | #010101 | ""   |
 #  400 Bad Request: "{"message":"Project name has to be between 2 and 250 characters long","code":501}
 
-  @ErrorUpdateProjectEstimate @Punto5
+  @ErrorUpdateProjectEstimate @Punto5 @400BadRequest
   Scenario Outline: Modificar presupuesto (budget) de proyecto -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/estimate
     And set value <resetOption> of key resetOption in body jsons/bodies/TP8_UpdateProjectEstimatedError.json
@@ -71,7 +71,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
 #  400 Bad Request: "{"message":"You entered invalid value for field: [resetOption].
 
 
-  @ErrorUpdateProjectMemberships @Punto5
+  @ErrorUpdateProjectMemberships @Punto5 @400BadRequest
   Scenario Outline: Modificar membresia de proyecto -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
     And set value <idUsuario> of key memberships[0].userId in body jsons/bodies/TP8_UpdateProjectMembership.json
@@ -85,7 +85,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
     #400 Bad Request: "{"message":"Amount has to be a positive value.","code":501}"
 
 
-  @ErrorAssignUserToProject @Punto5
+  @ErrorAssignUserToProject @Punto5 @400BadRequest
   Scenario Outline: Asignar/remover usuario al proyecto -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>/memberships
     And set value <idUsuario> of key userIds[0] in body jsons/bodies/TP8_UpdateUserProject.json
@@ -98,7 +98,7 @@ Feature: Trabajar con proyectos dentro de Workspaces
       | 664e488cca96041c2c4e4aa7 | 662696c75d9896471187566c | Remover |
     #400 Bad Request: "{"message":"JSON parse error: Cannot deserialize value of type `java.lang.Boolean` from String \"Remover\": only \"true\" or \"false\" recognized","code":3002}"
 
-  @ErrorUpdateBillableRate @Punto5
+  @ErrorUpdateBillableRate @Punto5 @400BadRequest
   Scenario Outline: Actualizar la tarifa facturable del usuario del proyecto -Error-
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<projectId>/users/<userId>/hourly-rate
     And set value <amountUser> of key amount in body jsons/bodies/TP8_BillableRate.json

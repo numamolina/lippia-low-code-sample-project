@@ -55,7 +55,6 @@ Feature: Trabajar con proyectos dentro de Workspaces
 
   @updateProjectUserCost
     #Ejercicio de eleccion libre de campo a editar
-    #Update project user cost rate
 #NO SE PUDO POR SER UNA CARACTERISTICA PREMIUM
   Scenario Outline: Editar el monto de algun proyecto existente
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<projectId>/users/<userId>/cost-rate
@@ -90,8 +89,6 @@ Feature: Trabajar con proyectos dentro de Workspaces
 
 
   @borrarProyectoID @Punto4
-#Punto 4
-    #Metodo DEL
   Scenario Outline: Borrar Proyecto por ID
     And endpoint v1/workspaces/$(env.workSpaceID)/projects/<IdProyecto>
     When execute method DELETE
