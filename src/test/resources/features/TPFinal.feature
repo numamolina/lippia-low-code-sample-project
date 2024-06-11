@@ -54,8 +54,8 @@ Feature: Automatizacion de escenarios
 
     Examples:
       | idTarea                  |
-      | 6667b6a6ec171a26e0a4f755 |
+      | 6667b65f49ef284a36dbb69d |
 
-#  idTarea Para eliminar luego:
-#  6667b65f49ef284a36dbb69d
-#  6667b65387b54248992ec85f
+#  idTarea Para poder eliminar luego:
+#  6667b96587b54248992ee326
+
